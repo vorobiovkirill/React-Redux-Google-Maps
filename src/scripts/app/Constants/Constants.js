@@ -1,0 +1,5 @@
+export const DEFAULT_MAP_CENTER = [30.523756, 50.450761];
+export const DEFAULT_MAP_ZOOM = 12;
+export const DEFAULT_MARKER_CLUSTER_GRID_SIZE = 60;
+export const DEFAULT_LIST_OF_ADDRESSES_FOLDED = true;
+export const GOOGLE_API_KEY = 'AIzaSyCuAfuuTqi6egha5XIV6tcFH59CCLpFvwk';
