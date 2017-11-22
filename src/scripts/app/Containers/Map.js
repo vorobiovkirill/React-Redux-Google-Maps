@@ -1,4 +1,8 @@
-import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, DEFAULT_MARKER_CLUSTER_GRID_SIZE } from '../Constants/Constants';
+import {
+	DEFAULT_MAP_CENTER,
+	DEFAULT_MAP_ZOOM,
+	DEFAULT_MARKER_CLUSTER_GRID_SIZE,
+} from '../Constants/Constants';
 import {
 	GoogleMap,
 	InfoWindow,
@@ -7,8 +11,19 @@ import {
 	withScriptjs,
 } from 'react-google-maps';
 import React, { Component } from 'react';
-import { compose, withProps, withStateHandlers } from 'recompose';
-import { getRegionsData, onMarkerClick, onOblastClick, onPointClick, onZoomChange } from '../actions/actionsTypes';
+import {
+	compose,
+	withProps,
+	withStateHandlers,
+} from 'recompose';
+import {
+	getRegionsData,
+	onMapLoaded,
+	onMarkerClick,
+	onOblastClick,
+	onPointClick,
+	onZoomChange,
+} from '../actions/actionsTypes';
 
 import ListOfAddresses from '../Component/ListOfAddresses';
 import { MapComponent } from '../Component/MapComponent';
@@ -22,14 +37,10 @@ class MapContainer extends Component {
 	state = {
 		intervalId: 0,
 		map: null,
-		isMarkerShown: false,
-		addresses: [],
 	}
 
 	componentWillMount = () => {
-		this.delayedShowMarker();
-
-		const newAddresses = this.state.addresses;
+		const newAddresses = this.props.addresses;
 		const MapOfAddresses = _.map(regions, (region) => region);
 		newAddresses.push(MapOfAddresses);
 
@@ -37,26 +48,8 @@ class MapContainer extends Component {
 		const favoritCity = _.flatMap(favoritOblast, 'addresses');
 		const favoritAddressesOfPoints = _.map(favoritCity, 'center');
 
-		this.props.getRegionsData(
-			MapOfAddresses,
-			favoritCity,
-		);
+		this.props.getRegionsData(MapOfAddresses, favoritCity);
 	}
-
-	// onPointClick = (name, center) => {
-	// 	const index = _.findIndex(this.state.coordinates, { name });
-	// 	this.scrollToTop();
-	// 	this.setState({
-	// 		markersIndex: {
-	// 			[index]: !this.state.markersIndex[index],
-	// 		},
-	// 		center: {
-	// 			lat: center[1],
-	// 			lng: center[0],
-	// 		},
-	// 		zoom: 16,
-	// 	});
-	// }
 
 	// onMapZoomChanged = (index) => {
 	// 	const newZoom = this.state.map.getZoom();
@@ -87,22 +80,8 @@ class MapContainer extends Component {
 		});
 	}
 
-	handleMarkerClick = () => {
-		this.setState({
-			isMarkerShown: false,
-		});
-		this.delayedShowMarker();
-	}
-
-	delayedShowMarker = () => {
-		setTimeout(() => {
-			this.setState({
-				isMarkerShown: true,
-			});
-		}, 1000);
-	}
-
 	mapLoaded = (map) => {
+		console.log('MAP LOADED');
 		if (this.state.map !== null) {
 			return;
 		}
@@ -111,59 +90,41 @@ class MapContainer extends Component {
 		});
 	}
 
-	// infoWindowToggle = ({ center, index }) => {
-	// 	this.setState({
-	// 		markersIndex: {
-	// 			[index]: !this.state.markersIndex[index],
-	// 		},
-	// 		center: {
-	// 			lat: center[1],
-	// 			lng: center[0],
-	// 		},
-	// 		zoom: 16,
-	// 	});
-	// }
-
 	render() {
 		return (
 			<div>
+				{this.props.zoom}
 				<MapComponent
-					isMarkerShown={this.state.isMarkerShown}
-					mapLoaded={this.mapLoaded}
+					mapLoaded={this.props.onMapLoaded}
+					isMarkerShown={this.props.isMarkerShown}
 					center={this.props.center}
 					zoom={this.props.zoom}
 					gridSize={this.props.gridSize}
 					coordinates={this.props.coordinates}
 					markersIndex={this.props.markersIndex}
-					onMarkerClick={this.handleMarkerClick}
 					zoomChanged={this.props.onZoomChange}
-					infoWindowToggle={this.props.onMarkerClick}
+					onMarkerClick={this.props.onMarkerClick}
 				/>
-				<ListOfAddresses
-					addresses={this.props.addresses}
-					onPointClick={this.props.onPointClick}
-					onOblastClick={this.props.onOblastClick}
-				/>
+				<ListOfAddresses />
 			</div>
 		);
 	}
 }
 
 MapContainer.PropTypes = {
-	center: PropTypes.any,
+	center: PropTypes.objectOf({
+		lat: PropTypes.number.isRequired,
+		lng: PropTypes.number.isRequired,
+	}).isRequired,
 	zoom: PropTypes.number,
 	intervalId: PropTypes.number,
-	map: PropTypes.any,
-	isMarkerShown: PropTypes.array,
-	addresses: PropTypes.array,
-	coordinates: PropTypes.array,
+	isMarkerShown: PropTypes.bool,
+	addresses: PropTypes.array.isRequired,
+	coordinates: PropTypes.array.isRequired,
 	markersIndex: PropTypes.object,
-	gridSize: PropTypes.number,
-	data: PropTypes.array,
-	onPointClick: PropTypes.func,
-	onMarkerClick: PropTypes.func,
+	gridSize: PropTypes.number.isRequired,
 	zoomChanged: PropTypes.func,
-	infoWindowToggle: PropTypes.func,
+	onMarkerClick: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -172,8 +133,9 @@ function mapStateToProps(state) {
 		zoom: state.MainReducer.zoom,
 		gridSize: state.MainReducer.gridSize,
 		markersIndex: state.MainReducer.markersIndex,
-		addresses: state.MainReducer.addresses,
 		coordinates: state.MainReducer.coordinates,
+		addresses: state.MainReducer.addresses,
+		isMarkerShown: state.MainReducer.isMarkerShown,
 	};
 }
 
@@ -181,9 +143,8 @@ const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		onZoomChange,
 		onMarkerClick,
-		onPointClick,
-		onOblastClick,
 		getRegionsData,
+		onMapLoaded,
 	}, dispatch);
 };
 

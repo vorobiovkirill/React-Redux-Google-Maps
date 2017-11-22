@@ -1,12 +1,25 @@
-import { DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM, DEFAULT_MARKER_CLUSTER_GRID_SIZE } from '../Constants/Constants';
-import { GET_REGIONS_DATA, ON_MARKER_CLICK, ON_OBLAST_CLICK, ON_POINT_CLICK, ON_ZOOM_CHANGED } from '../Constants';
+import {
+	DEFAULT_MAP_CENTER,
+	DEFAULT_MAP_ZOOM,
+	DEFAULT_MARKER_CLUSTER_GRID_SIZE,
+	MAP_ZOOM_AFTER_MARKER_CLICK,
+} from '../Constants/Constants';
+import {
+	GET_REGIONS_DATA,
+	ON_ADDRESS_CLICK,
+	ON_CITY_CLICK,
+	ON_MAP_LOADED,
+	ON_MARKER_CLICK,
+	ON_OBLAST_CLICK,
+	ON_ZOOM_CHANGED,
+} from '../Constants';
 
 import _ from 'lodash';
 
 const initialState = {
 	intervalId: 0,
 	map: null,
-	isMarkerShown: false,
+	isMarkerShown: true,
 	addresses: [],
 	coordinates: [],
 	markersIndex: {},
@@ -16,7 +29,8 @@ const initialState = {
 	},
 	zoom: DEFAULT_MAP_ZOOM,
 	gridSize: DEFAULT_MARKER_CLUSTER_GRID_SIZE,
-	// oblastFolded: true,
+	oblastFolded: {},
+	cityFolded: {},
 };
 
 const MainReducer = (state = initialState, action) => {
@@ -38,10 +52,26 @@ const MainReducer = (state = initialState, action) => {
 					lat: action.payload.center[1],
 					lng: action.payload.center[0],
 				},
-				zoom: 16,
+				zoom: MAP_ZOOM_AFTER_MARKER_CLICK,
 			};
 		}
-		case ON_POINT_CLICK: {
+		case ON_OBLAST_CLICK: {
+			return {
+				...state,
+				oblastFolded: {
+					[action.payload.name]: !state.oblastFolded[action.payload.name],
+				},
+			};
+		}
+		case ON_CITY_CLICK: {
+			return {
+				...state,
+				cityFolded: {
+					[action.payload.name]: !state.cityFolded[action.payload.name],
+				},
+			};
+		}
+		case ON_ADDRESS_CLICK: {
 			const index = _.findIndex(state.coordinates, { name: action.payload.name });
 			return {
 				...state,
@@ -52,15 +82,21 @@ const MainReducer = (state = initialState, action) => {
 					lat: action.payload.center[1],
 					lng: action.payload.center[0],
 				},
-				zoom: 16,
+				zoom: MAP_ZOOM_AFTER_MARKER_CLICK,
 			};
 		}
-		case ON_OBLAST_CLICK: {
+		case ON_MAP_LOADED: {
 			return {
 				...state,
-				oblastFolded: !action.payload.oblastFolded,
+				map: action.payload.map,
 			};
 		}
+		// case ON_ZOOM_CHANGED: {
+		// 	return {
+		// 		...state,
+		// 		zoom: action.payload.zoom,
+		// 	};
+		// }
 		default:
 			return state;
 	}

@@ -43,7 +43,7 @@ export const MapComponent = compose(
 				minimumClusterSize={2}
 			>
 				{props.isMarkerShown && props.coordinates.map((address, index) => {
-					const infoWindowToggle = () => props.infoWindowToggle({ index, center: address.center });
+					const infoWindowToggle = () => props.onMarkerClick({ index, center: address.center });
 
 					return (
 						<Marker

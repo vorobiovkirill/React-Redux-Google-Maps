@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
+import { onAddressClick, onCityClick } from '../actions/actionsTypes';
 
+import AddressView from '../Views/Address';
 import CityView from '../Views/City';
 import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../Constants/Constants';
-import PointView from '../Views/Point';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class CityContainer extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			folded: DEFAULT_LIST_OF_ADDRESSES_FOLDED,
-		};
-	}
-
-	onCityClick = () => {
-		this.setState({
-			folded: !this.state.folded,
-		});
-	}
-
-	pointsRender = (addresses, onPointClick) => {
+	pointsRender = (addresses) => {
 		return (
 			<ul className="level2">
 				{_.map(addresses, (address, index) => {
 					return (
-						<PointView
+						<AddressView
 							key={index}
 							name={address.name}
-							onPointClick={() => onPointClick(address.name, address.center)}
+							onAddressClick={() => this.props.onAddressClick(address.name, address.center)}
 						/>
 					);
 				})}
@@ -40,17 +30,30 @@ class CityContainer extends Component {
 	render() {
 		const {
 			city,
-			onPointClick,
 		} = this.props;
 
 		return (
 			<CityView
 				name={city.name}
-				onCityClick={() => this.onCityClick()}
+				onCityClick={() => this.props.onCityClick(city.name)}
 			>
-				{!this.state.folded && this.pointsRender(city.addresses, onPointClick)}
+				{this.props.cityFolded[city.name] && this.pointsRender(city.addresses)}
 			</CityView>
 		);
 	}
 }
-export default CityContainer;
+
+function mapStateToProps(state) {
+	return {
+		cityFolded: state.MainReducer.cityFolded,
+	};
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		onCityClick,
+		onAddressClick,
+	}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CityContainer);

@@ -9,9 +9,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vorobiovkirill/React-Starter-Kit"
+    "url": "https://github.com/vorobiovkirill/React-Redux-Google-Maps"
   },
-  "bugs": "https://github.com/vorobiovkirill/React-Starter-Kit/issues",
+  "bugs": "https://github.com/vorobiovkirill/React-Redux-Google-Maps/issues",
   "keywords": [
     "react",
     "redux",
@@ -24,6 +24,7 @@
     "boilerplate",
     "starter"
   ],
+  "main": "./src/scripts/index.js",
   "scripts": {
     "build": "npm run build:dev",
     "build:dev": "npm run clean:dist && webpack --config webpack.config.js --progress --profile --hide-modules --display-optimization-bailout",

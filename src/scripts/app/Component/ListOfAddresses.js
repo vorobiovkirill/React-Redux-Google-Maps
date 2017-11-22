@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import OblastContainer from '../Containers/Oblast';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { onOblastClick } from '../actions/actionsTypes';
 
 class ListOfAddresses extends Component {
 
@@ -13,7 +16,6 @@ class ListOfAddresses extends Component {
 				<OblastContainer
 					key={index}
 					oblast={oblast}
-					onPointClick={this.props.onPointClick}
 				/>
 			);
 		});
@@ -29,4 +31,17 @@ class ListOfAddresses extends Component {
 		);
 	}
 }
-export default ListOfAddresses;
+
+function mapStateToProps(state) {
+	return {
+		addresses: state.MainReducer.addresses,
+	};
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		onOblastClick,
+	}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListOfAddresses);

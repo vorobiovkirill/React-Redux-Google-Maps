@@ -5,23 +5,13 @@ import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../Constants/Constants';
 import OblastView from '../Views/Oblast';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { onOblastClick } from '../actions/actionsTypes';
 
 class OblastContainer extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			folded: DEFAULT_LIST_OF_ADDRESSES_FOLDED,
-		};
-	}
-
-	onOblastClick = () => {
-		this.setState({
-			folded: !this.state.folded,
-		});
-	}
-
-	citiesRender = (cities, onPointClick) => {
+	citiesRender = (cities) => {
 		return (
 			<ul className="level1">
 				{_.map(cities, (city, index) => {
@@ -29,7 +19,6 @@ class OblastContainer extends Component {
 						<CityContainer
 							key={index}
 							city={city}
-							onPointClick={onPointClick}
 						/>
 					);
 				})}
@@ -40,15 +29,14 @@ class OblastContainer extends Component {
 	oblastRender = () => {
 		const {
 			oblast,
-			onPointClick,
 		} = this.props;
 
 		return (
 			<OblastView
-				onOblastClick={() => this.onOblastClick()}
 				name={oblast.name}
+				onOblastClick={() => this.props.onOblastClick(oblast.name)}
 			>
-				{!this.state.folded && this.citiesRender(oblast.cities, onPointClick)}
+				{this.props.oblastFolded[oblast.name] && this.citiesRender(oblast.cities)}
 			</OblastView>
 		);
 	}
@@ -57,4 +45,17 @@ class OblastContainer extends Component {
 		return this.oblastRender();
 	}
 }
-export default OblastContainer;
+
+function mapStateToProps(state) {
+	return {
+		oblastFolded: state.MainReducer.oblastFolded,
+	};
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		onOblastClick,
+	}, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OblastContainer);

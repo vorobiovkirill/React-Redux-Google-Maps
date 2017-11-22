@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
-const PointView = ({ onPointClick, name }) => {
+const AddressView = ({ onAddressClick, name }) => {
 	return (
 		<li>
-			<a
-				onClick={onPointClick}
-			>
+			<a onClick={onAddressClick}>
 				{name}
 			</a>
 		</li>
 	);
 };
 
-export default PointView;
+export default AddressView;

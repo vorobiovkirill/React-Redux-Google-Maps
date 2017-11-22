@@ -1,18 +1,10 @@
-// export const ON_MARKER_CLICK = 'ON_MARKER_CLICK';
-// export const ON_OBLAST_CLICK = 'ON_OBLAST_CLICK';
-// export const ON_CITY_CLICK = 'ON_CITY_CLICK';
-// export const ON_ADDRESS_CLICK = 'ON_ADDRESS_CLICK';
-// export const ON_ZOOM_CHANGED = 'ON_ZOOM_CHANGED';
-// export const ON_POINT_CLICK = 'ON_POINT_CLICK';
-// export const GET_REGIONS_DATA = 'GET_REGIONS_DATA';
-
 import {
 	GET_REGIONS_DATA,
 	ON_ADDRESS_CLICK,
 	ON_CITY_CLICK,
+	ON_MAP_LOADED,
 	ON_MARKER_CLICK,
 	ON_OBLAST_CLICK,
-	ON_POINT_CLICK,
 	ON_ZOOM_CHANGED,
 } from '../Constants';
 
@@ -22,6 +14,34 @@ export const getRegionsData = (addresses, coordinates) => {
 		payload: {
 			addresses,
 			coordinates,
+		},
+	};
+};
+
+export const onOblastClick = (name) => {
+	return {
+		type: ON_OBLAST_CLICK,
+		payload: {
+			name,
+		},
+	};
+};
+
+export const onCityClick = (name) => {
+	return {
+		type: ON_CITY_CLICK,
+		payload: {
+			name,
+		},
+	};
+};
+
+export const onAddressClick = (name, center) => {
+	return {
+		type: ON_ADDRESS_CLICK,
+		payload: {
+			name,
+			center,
 		},
 	};
 };
@@ -36,21 +56,11 @@ export const onMarkerClick = ({ center, index }) => {
 	};
 };
 
-export const onOblastClick = (name) => {
+export const onMapLoaded = (map) => {
 	return {
-		type: ON_OBLAST_CLICK,
+		type: ON_MAP_LOADED,
 		payload: {
-			name,
-		},
-	};
-};
-
-export const onPointClick = (name, center) => {
-	return {
-		type: ON_POINT_CLICK,
-		payload: {
-			name,
-			center,
+			map,
 		},
 	};
 };
@@ -64,11 +74,3 @@ export const onZoomChange = (zoom) => {
 	};
 };
 
-// export const setRegionsData = (addresses) => {
-// 	return {
-// 		type: GET_REGIONS_DATA,
-// 		payload: {
-// 			addresses,
-// 		},
-// 	};
-// };
