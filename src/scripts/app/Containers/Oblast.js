@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
+import {
+	getCitiesData,
+	onOblastClick,
+} from '../actions/actionsTypes';
 
-import CityContainer from '../Containers/City';
-import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../Constants/Constants';
-import OblastView from '../Views/Oblast';
+import API from '../API';
+import CityContainer from '../containers/City';
+import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../constants/Constants';
+import OblastView from '../views/Oblast';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { onOblastClick } from '../actions/actionsTypes';
 
 class OblastContainer extends Component {
 
 	citiesRender = (cities) => {
+		const {
+			oblast,
+		} = this.props;
+
+		if (_.isEmpty(cities)) {
+			API.fetchCitiesByRegions(oblast.region_id)
+				.then(cities => this.props.getCitiesData(cities, oblast.region_id));
+
+			return null;
+		}
+
 		return (
 			<ul className="level1">
-				{_.map(cities, (city, index) => {
+				{_.map(cities, (city) => {
 					return (
 						<CityContainer
-							key={index}
+							key={city.city_id}
 							city={city}
+							regionId={oblast.region_id}
 						/>
 					);
 				})}
@@ -29,14 +45,17 @@ class OblastContainer extends Component {
 	oblastRender = () => {
 		const {
 			oblast,
+			oblastFolded,
 		} = this.props;
+
+		const isFolded = _.includes(oblastFolded, oblast.region_id);
 
 		return (
 			<OblastView
-				name={oblast.name}
-				onOblastClick={() => this.props.onOblastClick(oblast.name)}
+				name={oblast.region_name}
+				onOblastClick={() => this.props.onOblastClick(oblast.region_id)}
 			>
-				{this.props.oblastFolded[oblast.name] && this.citiesRender(oblast.cities)}
+				{isFolded && this.citiesRender(oblast.cities)}
 			</OblastView>
 		);
 	}
@@ -48,6 +67,7 @@ class OblastContainer extends Component {
 
 function mapStateToProps(state) {
 	return {
+		listOfAddressesFolded: state.MainReducer.listOfAddressesFolded,
 		oblastFolded: state.MainReducer.oblastFolded,
 	};
 }
@@ -55,6 +75,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		onOblastClick,
+		getCitiesData,
 	}, dispatch);
 };
 

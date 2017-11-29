@@ -1,4 +1,7 @@
 import {
+	GET_ALL_CASHDESKS,
+	GET_CASHDESKS_DATA,
+	GET_CITIES_DATA,
 	GET_REGIONS_DATA,
 	ON_ADDRESS_CLICK,
 	ON_CITY_CLICK,
@@ -6,52 +9,84 @@ import {
 	ON_MARKER_CLICK,
 	ON_OBLAST_CLICK,
 	ON_ZOOM_CHANGED,
-} from '../Constants';
+} from '../constants';
 
-export const getRegionsData = (addresses, coordinates) => {
+export const getRegionsData = (regions) => {
 	return {
 		type: GET_REGIONS_DATA,
 		payload: {
-			addresses,
+			regions,
+		},
+	};
+};
+
+export const getCitiesData = (cities, regionId) => {
+	return {
+		type: GET_CITIES_DATA,
+		payload: {
+			cities,
+			regionId,
+		},
+	};
+};
+
+export const getCashdesksData = (city, regionId, cityId, cashdesks) => {
+	return {
+		type: GET_CASHDESKS_DATA,
+		payload: {
+			city,
+			regionId,
+			cityId,
+			cashdesks,
+		},
+	};
+};
+
+export const getAllCashdesks = (coordinates) => {
+	return {
+		type: GET_ALL_CASHDESKS,
+		payload: {
 			coordinates,
 		},
 	};
 };
 
-export const onOblastClick = (name) => {
+
+export const onOblastClick = (regionId) => {
 	return {
 		type: ON_OBLAST_CLICK,
 		payload: {
-			name,
+			regionId,
 		},
 	};
 };
 
-export const onCityClick = (name) => {
+export const onCityClick = (regionId, cityId) => {
 	return {
 		type: ON_CITY_CLICK,
 		payload: {
-			name,
+			regionId,
+			cityId,
 		},
 	};
 };
 
-export const onAddressClick = (name, center) => {
+export const onAddressClick = (cashdeskId, center) => {
 	return {
 		type: ON_ADDRESS_CLICK,
 		payload: {
-			name,
+			cashdeskId,
 			center,
 		},
 	};
 };
 
-export const onMarkerClick = ({ center, index }) => {
+export const onMarkerClick = (cashdeskId, center) => {
 	return {
 		type: ON_MARKER_CLICK,
 		payload: {
+			cashdeskId,
 			center,
-			index,
 		},
 	};
 };
@@ -73,4 +108,3 @@ export const onZoomChange = (zoom) => {
 		},
 	};
 };
-

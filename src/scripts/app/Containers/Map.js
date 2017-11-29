@@ -2,7 +2,8 @@ import {
 	DEFAULT_MAP_CENTER,
 	DEFAULT_MAP_ZOOM,
 	DEFAULT_MARKER_CLUSTER_GRID_SIZE,
-} from '../Constants/Constants';
+	DEFAULT_MINIMUM_CLUSTER_SIZE,
+} from '../constants/Constants';
 import {
 	GoogleMap,
 	InfoWindow,
@@ -12,11 +13,7 @@ import {
 } from 'react-google-maps';
 import React, { Component } from 'react';
 import {
-	compose,
-	withProps,
-	withStateHandlers,
-} from 'recompose';
-import {
+	getAllCashdesks,
 	getRegionsData,
 	onMapLoaded,
 	onMarkerClick,
@@ -25,46 +22,27 @@ import {
 	onZoomChange,
 } from '../actions/actionsTypes';
 
-import ListOfAddresses from '../Component/ListOfAddresses';
-import { MapComponent } from '../Component/MapComponent';
+import API from '../API';
+import ListOfAddresses from '../components/ListOfAddresses';
+import { MapComponent } from '../components/MapComponent';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { regions } from '../../data/address-uk-favoritsport';
+
+// import { regions } from '../../data/address-uk-favoritsport';
 
 class MapContainer extends Component {
 	state = {
 		intervalId: 0,
-		map: null,
 	}
 
 	componentWillMount = () => {
-		const newAddresses = this.props.addresses;
-		const MapOfAddresses = _.map(regions, (region) => region);
-		newAddresses.push(MapOfAddresses);
-
-		const favoritOblast = _.flatMap(regions, 'cities');
-		const favoritCity = _.flatMap(favoritOblast, 'addresses');
-		const favoritAddressesOfPoints = _.map(favoritCity, 'center');
-
-		this.props.getRegionsData(MapOfAddresses, favoritCity);
+		API.fetchAllRegions()
+			.then(regions => this.props.getRegionsData(regions));
+		API.fetchAllCashdesks()
+			.then(coordinates => this.props.getAllCashdesks(coordinates));
 	}
-
-	// onMapZoomChanged = (index) => {
-	// 	const newZoom = this.state.map.getZoom();
-	// 	const markersIndex = this.state.markersIndex;
-	// 	this.setState({
-	// 		zoom: newZoom,
-	// 		markersIndex: {},
-	// 	});
-	// 	// HACK
-	// 	setTimeout(() => {
-	// 		this.setState({
-	// 			markersIndex,
-	// 		});
-	// 	}, 300);
-	// }
 
 	scrollStep() {
 		if (window.pageYOffset === 0) {
@@ -80,28 +58,19 @@ class MapContainer extends Component {
 		});
 	}
 
-	mapLoaded = (map) => {
-		console.log('MAP LOADED');
-		if (this.state.map !== null) {
-			return;
-		}
-		this.setState({
-			map,
-		});
-	}
-
 	render() {
 		return (
 			<div>
-				{this.props.zoom}
+				<span>THE CURRENT MAP ZOOM: {this.props.zoom}</span>
 				<MapComponent
 					mapLoaded={this.props.onMapLoaded}
 					isMarkerShown={this.props.isMarkerShown}
 					center={this.props.center}
 					zoom={this.props.zoom}
 					gridSize={this.props.gridSize}
+					minimumClusterSize={this.props.minimumClusterSize}
 					coordinates={this.props.coordinates}
-					markersIndex={this.props.markersIndex}
+					markerFolded={this.props.markerFolded}
 					zoomChanged={this.props.onZoomChange}
 					onMarkerClick={this.props.onMarkerClick}
 				/>
@@ -119,9 +88,8 @@ MapContainer.PropTypes = {
 	zoom: PropTypes.number,
 	intervalId: PropTypes.number,
 	isMarkerShown: PropTypes.bool,
-	addresses: PropTypes.array.isRequired,
 	coordinates: PropTypes.array.isRequired,
-	markersIndex: PropTypes.object,
+	markerFolded: PropTypes.object,
 	gridSize: PropTypes.number.isRequired,
 	zoomChanged: PropTypes.func,
 	onMarkerClick: PropTypes.func,
@@ -132,9 +100,9 @@ function mapStateToProps(state) {
 		center: state.MainReducer.center,
 		zoom: state.MainReducer.zoom,
 		gridSize: state.MainReducer.gridSize,
-		markersIndex: state.MainReducer.markersIndex,
+		minimumClusterSize: state.MainReducer.minimumClusterSize,
+		markerFolded: state.MainReducer.markerFolded,
 		coordinates: state.MainReducer.coordinates,
-		addresses: state.MainReducer.addresses,
 		isMarkerShown: state.MainReducer.isMarkerShown,
 	};
 }
@@ -144,6 +112,7 @@ const mapDispatchToProps = (dispatch) => {
 		onZoomChange,
 		onMarkerClick,
 		getRegionsData,
+		getAllCashdesks,
 		onMapLoaded,
 	}, dispatch);
 };

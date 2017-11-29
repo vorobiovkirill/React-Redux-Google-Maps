@@ -89,23 +89,23 @@ const config = {
 			filename: 'css/style.[hash].css',
 		}),
 
-		new HtmlWebpackPlugin({
-			title: 'My React App!!!!',
-			template: './src/index.html.ejs',
-			inject: 'body',
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true,
-				removeRedundantAttributes: true,
-				useShortDoctype: true,
-				removeEmptyAttributes: true,
-				removeStyleLinkTypeAttributes: true,
-				keepClosingSlash: true,
-				minifyJS: true,
-				minifyCSS: true,
-				minifyURLs: true,
-			},
-		}),
+		// new HtmlWebpackPlugin({
+		// 	title: 'My React App!!!!',
+		// 	template: './src/index.html.ejs',
+		// 	inject: 'body',
+		// 	minify: {
+		// 		removeComments: true,
+		// 		collapseWhitespace: true,
+		// 		removeRedundantAttributes: true,
+		// 		useShortDoctype: true,
+		// 		removeEmptyAttributes: true,
+		// 		removeStyleLinkTypeAttributes: true,
+		// 		keepClosingSlash: true,
+		// 		minifyJS: true,
+		// 		minifyCSS: true,
+		// 		minifyURLs: true,
+		// 	},
+		// }),
 
 		/**
 		 * @link https://webpack.js.org/plugins/commons-chunk-plugin/
@@ -140,7 +140,7 @@ const config = {
 		 */
 		new OptimizeCssAssetsPlugin(),
 
-		new webpack.HotModuleReplacementPlugin(),
+		// new webpack.HotModuleReplacementPlugin(),
 	],
 
 };

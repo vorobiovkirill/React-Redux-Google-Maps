@@ -8,7 +8,7 @@ import {
 import React, { Component } from 'react';
 import { compose, withHandlers, withProps, withState, withStateHandlers } from 'recompose';
 
-import { GOOGLE_API_KEY } from '../Constants/Constants';
+import { GOOGLE_API_KEY } from '../constants/Constants';
 import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -40,30 +40,40 @@ export const MapComponent = compose(
 				averageCenter
 				enableRetinaIcons
 				gridSize={props.gridSize}
-				minimumClusterSize={2}
+				minimumClusterSize={props.minimumClusterSize}
 			>
-				{props.isMarkerShown && props.coordinates.map((address, index) => {
-					const infoWindowToggle = () => props.onMarkerClick({ index, center: address.center });
+				{props.isMarkerShown && props.coordinates.map((cashdesk) => {
+					const {
+						latitude,
+						longitude,
+					} = cashdesk;
+					const infoWindowToggle = () => props.onMarkerClick(cashdesk.cashdesk_id, [+latitude, +longitude]);
 
 					return (
 						<Marker
-							key={address.name}
-							position={{ lat: address.center[1], lng: address.center[0] }}
-							defaultTitle={address.name}
+							key={cashdesk.cashdesk_id}
+							position={{
+								lat: +cashdesk.latitude,
+								lng: +cashdesk.longitude,
+							}}
+							defaultTitle={cashdesk.address}
 							onClick={infoWindowToggle}
 						>
-							{props.markersIndex[index] && (
+							{props.markerFolded[cashdesk.cashdesk_id] && (
 								<InfoWindow
 									onCloseClick={infoWindowToggle}
-									position={{ lat: address.center[1], lng: address.center[0] }}
+									position={{ lat: +cashdesk.latitude, lng: +cashdesk.longitude }}
 								>
 									<div>
-										{address.img &&
+										{cashdesk.cashdesk_id &&
 											<div>
-												<img src={`/static/media/themes/maps/img/${address.img}.jpg`} alt={address.name} />
+												<img
+													src={`/static/media/themes/maps/img/${cashdesk.cashdesk_id}.jpg`}
+													alt={cashdesk.address}
+												/>
 											</div>
 										}
-										<span>{address.name}</span>
+										<span>{cashdesk.address}</span>
 									</div>
 								</InfoWindow>
 							)}
