@@ -6,7 +6,13 @@ import {
 	withScriptjs,
 } from 'react-google-maps';
 import React, { Component } from 'react';
-import { compose, withHandlers, withProps, withState, withStateHandlers } from 'recompose';
+import {
+	compose,
+	withHandlers,
+	withProps,
+	withState,
+	withStateHandlers,
+} from 'recompose';
 
 import { GOOGLE_API_KEY } from '../constants/Constants';
 import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
