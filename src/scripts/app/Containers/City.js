@@ -52,6 +52,7 @@ class CityContainer extends Component {
 			city,
 			regionId,
 			cityFolded,
+			listOfAddressesFolded,
 		} = this.props;
 
 		const isFolded = _.includes(cityFolded, city.city_id);
@@ -61,7 +62,13 @@ class CityContainer extends Component {
 				name={city.city_name}
 				onCityClick={() => this.props.onCityClick(regionId, city.city_id)}
 			>
-				{isFolded && this.pointsRender(city.cashdesks)}
+				{
+					!listOfAddressesFolded
+						? this.pointsRender(city.cashdesks)
+						: isFolded
+							? this.pointsRender(city.cashdesks)
+							: null
+				}
 			</CityView>
 		);
 	}
@@ -69,6 +76,7 @@ class CityContainer extends Component {
 
 function mapStateToProps(state) {
 	return {
+		listOfAddressesFolded: state.MainReducer.listOfAddressesFolded,
 		cityFolded: state.MainReducer.cityFolded,
 	};
 }

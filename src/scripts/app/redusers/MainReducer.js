@@ -26,9 +26,6 @@ const initialState = {
 	intervalId: 0,
 	map: null,
 	isMarkerShown: true,
-	regions: [],
-	coordinates: [],
-	markerFolded: {},
 	center: {
 		lat: DEFAULT_MAP_CENTER[0],
 		lng: DEFAULT_MAP_CENTER[1],
@@ -36,6 +33,9 @@ const initialState = {
 	zoom: DEFAULT_MAP_ZOOM,
 	gridSize: DEFAULT_MARKER_CLUSTER_GRID_SIZE,
 	minimumGridSize: DEFAULT_MINIMUM_CLUSTER_SIZE,
+	regions: [],
+	coordinates: [],
+	markerFolded: {},
 	listOfAddressesFolded: DEFAULT_LIST_OF_ADDRESSES_FOLDED,
 	oblastFolded: [],
 	cityFolded: [],
@@ -85,7 +85,6 @@ const MainReducer = (state = initialState, action) => {
 			const cityId = action.payload.cityId;
 			const regionId = action.payload.regionId;
 			const cashdesks = action.payload.cashdesks;
-
 			const regions = state.regions;
 
 			const newRegions = _.map(regions, (region) => {
@@ -119,7 +118,6 @@ const MainReducer = (state = initialState, action) => {
 
 			return {
 				...state,
-				listOfAddressesFolded: !state.listOfAddressesFolded,
 				oblastFolded: newFoldedRegions,
 			};
 		}
@@ -137,9 +135,17 @@ const MainReducer = (state = initialState, action) => {
 		case ON_ADDRESS_CLICK: {
 			const cashdeskId = action.payload.cashdeskId;
 
+			const pageYOffset = window.scroll(0, window.pageYOffset - 1000);
+
+			if (window.pageYOffset === 0) {
+				clearInterval(state.intervalId);
+			}
+
+			let newIntervalId = setInterval(pageYOffset, 16.66);
+
 			return {
 				...state,
-				// intervalId: newIntervalId,
+				intervalId: newIntervalId,
 				markerFolded: {
 					[cashdeskId]: !state.markerFolded[cashdeskId],
 				},

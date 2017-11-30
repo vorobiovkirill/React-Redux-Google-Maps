@@ -46,6 +46,7 @@ class OblastContainer extends Component {
 		const {
 			oblast,
 			oblastFolded,
+			listOfAddressesFolded,
 		} = this.props;
 
 		const isFolded = _.includes(oblastFolded, oblast.region_id);
@@ -55,7 +56,13 @@ class OblastContainer extends Component {
 				name={oblast.region_name}
 				onOblastClick={() => this.props.onOblastClick(oblast.region_id)}
 			>
-				{isFolded && this.citiesRender(oblast.cities)}
+				{
+					!listOfAddressesFolded
+						? this.citiesRender(oblast.cities)
+						: isFolded
+							? this.citiesRender(oblast.cities)
+							: null
+				}
 			</OblastView>
 		);
 	}

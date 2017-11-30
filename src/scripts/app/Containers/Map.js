@@ -30,12 +30,7 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// import { regions } from '../../data/address-uk-favoritsport';
-
 class MapContainer extends Component {
-	state = {
-		intervalId: 0,
-	}
 
 	componentWillMount = () => {
 		API.fetchAllRegions()
@@ -44,24 +39,9 @@ class MapContainer extends Component {
 			.then(coordinates => this.props.getAllCashdesks(coordinates));
 	}
 
-	scrollStep() {
-		if (window.pageYOffset === 0) {
-			clearInterval(this.state.intervalId);
-		}
-		window.scroll(0, window.pageYOffset - this.props.scrollStepInPx);
-	}
-
-	scrollToTop() {
-		let newIntervalId = setInterval(this.scrollStep.bind(this), this.props.delayInMs);
-		this.setState({
-			intervalId: newIntervalId,
-		});
-	}
-
 	render() {
 		return (
 			<div>
-				<span>THE CURRENT MAP ZOOM: {this.props.zoom}</span>
 				<MapComponent
 					mapLoaded={this.props.onMapLoaded}
 					isMarkerShown={this.props.isMarkerShown}
@@ -80,8 +60,8 @@ class MapContainer extends Component {
 	}
 }
 
-MapContainer.PropTypes = {
-	center: PropTypes.objectOf({
+MapContainer.propTypes = {
+	center: PropTypes.shape({
 		lat: PropTypes.number.isRequired,
 		lng: PropTypes.number.isRequired,
 	}).isRequired,
