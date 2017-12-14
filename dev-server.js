@@ -18,8 +18,8 @@ const args = require('minimist')(process.argv);
 const port = args.p || 3002;
 const host = args.h || '10.1.4.38';
 const apiPort = args.a ? `:${args.a}` : '';
-const devHost = args.devHost || 'favorit.dev';
-const remoteProtocol = args.protocol || 'http';
+const devHost = args.devHost || 'www.favorit.com.ua';
+const remoteProtocol = args.protocol || 'https';
 
 const fakeSession = '6473B317306FC3068511A1B1C5'; // test
 
@@ -110,7 +110,7 @@ app.get('/index*', (req, res) => {
 
 app.all('*/content/*', (req, res) => {
     proxy.web(req, res, {
-        target: 'http://favorit.dev',
+		target: 'https://www.favorit.com.ua',
     });
 });
 

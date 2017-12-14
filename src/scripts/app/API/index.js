@@ -11,13 +11,13 @@ const fetchAllRegions = () =>
 		.catch(error => console.error(error));
 
 const fetchCitiesByRegions = (regionId) =>
-	fetch(`${CITIES_BY_REGIONS_URL}${regionId}`, { method: 'GET', credentials: 'include' })
+	fetch(`${CITIES_BY_REGIONS_URL}${regionId}/`, { method: 'GET', credentials: 'include' })
 		.then((response) => response.json())
 		// .then(cities => cities)
 		.catch(error => console.error(error));
 
 const fetchCashDesksByCity = (cityId) =>
-	fetch(`${CASHDESKS_BY_CITY_URL}${cityId}`, { method: 'GET', credentials: 'include' })
+	fetch(`${CASHDESKS_BY_CITY_URL}${cityId}/`, { method: 'GET', credentials: 'include' })
 		.then((response) => response.json())
 		// .then(cashdesk => cashdesk)
 		.catch(error => console.error(error));

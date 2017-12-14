@@ -117,6 +117,14 @@ const config = {
 		// 	},
 		// }),
 
+		/**
+		 * @link https://webpack.js.org/plugins/define-plugin/
+		 */
+		new webpack.DefinePlugin({
+			__DEVELOPMENT__: true,
+			__PRODUCTION__: false,
+		}),
+
 		new webpack.HotModuleReplacementPlugin(),
 	],
 

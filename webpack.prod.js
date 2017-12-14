@@ -136,6 +136,14 @@ const config = {
 		}),
 
 		/**
+		 * @link https://webpack.js.org/plugins/define-plugin/
+		 */
+		new webpack.DefinePlugin({
+			__DEVELOPMENT__: false,
+			__PRODUCTION__: true,
+		}),
+
+		/**
 		 * @link https://github.com/NMFR/optimize-css-assets-webpack-plugin
 		 */
 		new OptimizeCssAssetsPlugin(),

@@ -33,7 +33,7 @@ export const MapComponent = compose(
 	}),
 	withScriptjs,
 	withGoogleMap,
-)(props => {
+)((props) => {
 	return (
 		<GoogleMap
 			ref={props.mapLoaded}

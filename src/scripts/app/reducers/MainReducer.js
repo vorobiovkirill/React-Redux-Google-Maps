@@ -19,7 +19,6 @@ import {
 	ON_ZOOM_CHANGED,
 } from '../constants';
 
-import ListOfAddresses from '../components/ListOfAddresses';
 import _ from 'lodash';
 
 const initialState = {
@@ -49,12 +48,6 @@ const MainReducer = (state = initialState, action) => {
 				map: action.payload.map,
 			};
 		}
-		case GET_REGIONS_DATA: {
-			return {
-				...state,
-				regions: action.payload.regions,
-			};
-		}
 		case GET_ALL_CASHDESKS: {
 			const filteredCoordinates = _.filter(action.payload.coordinates, (coordinate) =>
 				!_.isNil(coordinate.latitude) && !_.isNil(coordinate.longitude),
@@ -65,10 +58,19 @@ const MainReducer = (state = initialState, action) => {
 				coordinates: filteredCoordinates,
 			};
 		}
+		case GET_REGIONS_DATA: {
+			const newRegions = action.payload.regions;
+			const sortedRegions = _.orderBy(newRegions, 'region_name');
+
+			return {
+				...state,
+				regions: sortedRegions,
+			};
+		}
 		case GET_CITIES_DATA: {
 			const regionId = action.payload.regionId;
-			const cities = action.payload.cities;
 			const regions = state.regions;
+			const cities = _.orderBy(action.payload.cities, 'city_name');
 
 			const newRegions = _.map(regions, (region) => region.region_id === regionId
 				? { ...region, cities }
@@ -84,7 +86,7 @@ const MainReducer = (state = initialState, action) => {
 			const newCities = action.payload.city;
 			const cityId = action.payload.cityId;
 			const regionId = action.payload.regionId;
-			const cashdesks = action.payload.cashdesks;
+			const cashdesks = _.orderBy(action.payload.cashdesks, 'address');
 			const regions = state.regions;
 
 			const newRegions = _.map(regions, (region) => {
@@ -134,8 +136,7 @@ const MainReducer = (state = initialState, action) => {
 		}
 		case ON_ADDRESS_CLICK: {
 			const cashdeskId = action.payload.cashdeskId;
-
-			const pageYOffset = window.scroll(0, window.pageYOffset - 1000);
+			const pageYOffset = window.scroll(0, window.pageYOffset - 10000);
 
 			if (window.pageYOffset === 0) {
 				clearInterval(state.intervalId);

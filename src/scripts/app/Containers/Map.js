@@ -22,7 +22,7 @@ import {
 	onZoomChange,
 } from '../actions/actionsTypes';
 
-import API from '../API';
+import API from '../api';
 import ListOfAddresses from '../components/ListOfAddresses';
 import { MapComponent } from '../components/MapComponent';
 import PropTypes from 'prop-types';

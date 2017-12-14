@@ -5,7 +5,7 @@ import {
 	onCityClick,
 } from '../actions/actionsTypes';
 
-import API from '../API';
+import API from '../api';
 import AddressView from '../views/Address';
 import CityView from '../views/City';
 import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../constants/Constants';
@@ -16,20 +16,39 @@ import { connect } from 'react-redux';
 
 class CityContainer extends Component {
 
+	state = {
+		fetchCashDesksByCity: true,
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (!_.includes(nextProps.cityFolded, nextProps.city.city_id)) {
+			this.setState({
+				fetchCashDesksByCity: true,
+			});
+		}
+	}
+
 	pointsRender = (cashdesks) => {
-		if (_.isEmpty(cashdesks)) {
+		if (this.state.fetchCashDesksByCity) {
 			const {
 				regionId,
 				city,
 			} = this.props;
 
 			API.fetchCashDesksByCity(city.city_id)
-				.then(cashdesks => this.props.getCashdesksData(city, regionId, city.city_id, cashdesks));
+				.then(cashdesks => {
+					this.setState({
+						fetchCashDesksByCity: false,
+					});
+					this.props.getCashdesksData(city, regionId, city.city_id, cashdesks);
+				});
 
-			return null;
+			return <i className="fa fa-spinner fa-spin" />;
 		}
-		return (
-			<ul className="level2">
+
+		return _.isEmpty(cashdesks)
+			? <span className="empty" />
+			: <ul className="level2">
 				{_.map(cashdesks, (cashdesk) => {
 					const {
 						latitude,
@@ -43,8 +62,7 @@ class CityContainer extends Component {
 						/>
 					);
 				})}
-			</ul>
-		);
+			</ul>;
 	}
 
 	render() {

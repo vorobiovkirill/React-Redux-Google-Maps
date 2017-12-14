@@ -4,7 +4,7 @@ import {
 	onOblastClick,
 } from '../actions/actionsTypes';
 
-import API from '../API';
+import API from '../api';
 import CityContainer from '../containers/City';
 import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../constants/Constants';
 import OblastView from '../views/Oblast';
@@ -24,7 +24,7 @@ class OblastContainer extends Component {
 			API.fetchCitiesByRegions(oblast.region_id)
 				.then(cities => this.props.getCitiesData(cities, oblast.region_id));
 
-			return null;
+			return <i className="fa fa-spinner fa-spin" />;
 		}
 
 		return (

@@ -6,6 +6,6 @@ export const DEFAULT_MARKER_CLUSTER_GRID_SIZE = 60;
 export const DEFAULT_MINIMUM_CLUSTER_SIZE = 2;
 export const DEFAULT_LIST_OF_ADDRESSES_FOLDED = true;
 
-export const REGIONS_URL = '/ru/content/cashdesks/regions/';
-export const CITIES_BY_REGIONS_URL = '/ru/content/cashdesks/region/';
-export const CASHDESKS_BY_CITY_URL = '/ru/content/cashdesks/';
+export const REGIONS_URL = '/content/cashdesks/regions/';
+export const CITIES_BY_REGIONS_URL = '/content/cashdesks/region/';
+export const CASHDESKS_BY_CITY_URL = '/content/cashdesks/';

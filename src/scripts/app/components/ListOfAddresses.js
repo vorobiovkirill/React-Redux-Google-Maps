@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import API from '../API';
+import API from '../api';
 import OblastContainer from '../containers/Oblast';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
