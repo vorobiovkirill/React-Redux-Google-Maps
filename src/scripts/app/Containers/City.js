@@ -46,23 +46,25 @@ class CityContainer extends Component {
 			return <i className="fa fa-spinner fa-spin" />;
 		}
 
-		return _.isEmpty(cashdesks)
-			? <span className="empty" />
-			: <ul className="level2">
-				{_.map(cashdesks, (cashdesk) => {
-					const {
-						latitude,
-						longitude,
-					} = cashdesk;
-					return (
-						<AddressView
-							key={cashdesk.cashdesk_id}
-							name={cashdesk.address}
-							onAddressClick={() => this.props.onAddressClick(cashdesk.cashdesk_id, [+latitude, +longitude])}
-						/>
-					);
-				})}
-			</ul>;
+		return (
+			_.isEmpty(cashdesks)
+				? <span className="empty" />
+				: <ul className="level2">
+					{_.map(cashdesks, (cashdesk) => {
+						const {
+							latitude,
+							longitude,
+						} = cashdesk;
+						return (
+							<AddressView
+								key={cashdesk.cashdesk_id}
+								name={cashdesk.address}
+								onAddressClick={() => this.props.onAddressClick(cashdesk.cashdesk_id, [+latitude, +longitude])}
+							/>
+						);
+					})}
+				</ul>
+		);
 	}
 
 	render() {

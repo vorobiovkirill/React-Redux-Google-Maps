@@ -32,34 +32,6 @@ const config = {
 		extensions: ['.js', '.jsx', '.css', '.sass', '.scss', '.html'],
 	},
 
-	/**
-	 * @link https://webpack.github.io/docs/webpack-dev-server.html
-	 */
-	// devServer: {
-	// 	contentBase: path.resolve(__dirname, 'dist'),
-	// 	compress: true,
-	// 	historyApiFallback: true,
-	// 	port: 8080,
-	// 	inline: true,
-	// 	open: true,
-	// 	stats: {
-	// 		colors: true,
-	// 		hash: false,
-	// 		version: false,
-	// 		timings: false,
-	// 		assets: false,
-	// 		chunks: false,
-	// 		modules: false,
-	// 		reasons: false,
-	// 		children: false,
-	// 		source: false,
-	// 		errors: true,
-	// 		errorDetails: true,
-	// 		warnings: false,
-	// 		publicPath: false,
-	// 	},
-	// },
-
 	module: {
 		rules: [
 			{
@@ -98,24 +70,6 @@ const config = {
 		new ExtractTextPlugin({
 			filename: 'css/style.[hash].css',
 		}),
-
-		// new HtmlWebpackPlugin({
-		// 	title: 'My React App!!!!',
-		// 	template: './src/index.html',
-		// 	inject: 'body',
-		// 	minify: {
-		// 		removeComments: true,
-		// 		collapseWhitespace: true,
-		// 		removeRedundantAttributes: true,
-		// 		useShortDoctype: true,
-		// 		removeEmptyAttributes: true,
-		// 		removeStyleLinkTypeAttributes: true,
-		// 		keepClosingSlash: true,
-		// 		minifyJS: true,
-		// 		minifyCSS: true,
-		// 		minifyURLs: true,
-		// 	},
-		// }),
 
 		/**
 		 * @link https://webpack.js.org/plugins/define-plugin/

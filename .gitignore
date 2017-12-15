@@ -414,7 +414,7 @@ __pycache__/
 build/
 dist/
 resources/
-src/scripts/app/constants/Constants.js
+/src/scripts/app/constants/Constants.js
 
 # Sprites
 /src/images/sprites/*

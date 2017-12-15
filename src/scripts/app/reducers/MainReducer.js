@@ -49,9 +49,9 @@ const MainReducer = (state = initialState, action) => {
 			};
 		}
 		case GET_ALL_CASHDESKS: {
-			const filteredCoordinates = _.filter(action.payload.coordinates, (coordinate) =>
-				!_.isNil(coordinate.latitude) && !_.isNil(coordinate.longitude),
-			);
+			const { coordinates } = action.payload;
+			const filteredCoordinates = _.filter(coordinates, (coordinate) =>
+				!_.isNil(coordinate.latitude) && !_.isNil(coordinate.longitude));
 
 			return {
 				...state,
@@ -59,37 +59,38 @@ const MainReducer = (state = initialState, action) => {
 			};
 		}
 		case GET_REGIONS_DATA: {
-			const newRegions = action.payload.regions;
-			const sortedRegions = _.orderBy(newRegions, 'region_name');
+			const { regions } = action.payload;
+			const uaSort = (s1, s2) => s1.region_name.localeCompare(s2.region_name);
+
+			const SortedRegions = regions.sort(uaSort);
 
 			return {
 				...state,
-				regions: sortedRegions,
+				regions: SortedRegions,
 			};
 		}
 		case GET_CITIES_DATA: {
-			const regionId = action.payload.regionId;
-			const regions = state.regions;
-			const cities = _.orderBy(action.payload.cities, 'city_name');
+			const { regions } = state;
+			const { regionId, cities } = action.payload;
+			const uaSort = (s1, s2) => s1.city_name.localeCompare(s2.city_name);
+			const SortedCities = cities.sort(uaSort);
 
-			const newRegions = _.map(regions, (region) => region.region_id === regionId
-				? { ...region, cities }
-				: region,
-			);
+			const UpdatedRegions = _.map(regions, (region) => region.region_id === regionId
+				? { ...region, cities: SortedCities }
+				: region);
 
 			return {
 				...state,
-				regions: newRegions,
+				regions: UpdatedRegions,
 			};
 		}
 		case GET_CASHDESKS_DATA: {
-			const newCities = action.payload.city;
-			const cityId = action.payload.cityId;
-			const regionId = action.payload.regionId;
-			const cashdesks = _.orderBy(action.payload.cashdesks, 'address');
-			const regions = state.regions;
+			const { regions } = state;
+			const { regionId, cityId, cashdesks } = action.payload;
+			const uaSort = (s1, s2) => s1.address.localeCompare(s2.address);
+			const SortedCashdesks = cashdesks.sort(uaSort);
 
-			const newRegions = _.map(regions, (region) => {
+			const UpdatedRegions = _.map(regions, (region) => {
 				if (region.region_id === regionId) {
 					return {
 						...region,
@@ -97,7 +98,7 @@ const MainReducer = (state = initialState, action) => {
 							if (city.city_id === cityId) {
 								return {
 									...city,
-									cashdesks,
+									cashdesks: SortedCashdesks,
 								};
 							}
 							return city;
@@ -109,7 +110,7 @@ const MainReducer = (state = initialState, action) => {
 
 			return {
 				...state,
-				regions: newRegions,
+				regions: UpdatedRegions,
 			};
 		}
 		case ON_OBLAST_CLICK: {
@@ -135,7 +136,7 @@ const MainReducer = (state = initialState, action) => {
 			};
 		}
 		case ON_ADDRESS_CLICK: {
-			const cashdeskId = action.payload.cashdeskId;
+			const { cashdeskId } = action.payload;
 			const pageYOffset = window.scroll(0, window.pageYOffset - 10000);
 
 			if (window.pageYOffset === 0) {
@@ -158,7 +159,7 @@ const MainReducer = (state = initialState, action) => {
 			};
 		}
 		case ON_MARKER_CLICK: {
-			const cashdeskId = action.payload.cashdeskId;
+			const { cashdeskId } = action.payload;
 
 			return {
 				...state,
@@ -174,6 +175,7 @@ const MainReducer = (state = initialState, action) => {
 		}
 		case ON_ZOOM_CHANGED: {
 			const newZoom = state.map.getZoom();
+
 			return {
 				...state,
 				zoom: newZoom,

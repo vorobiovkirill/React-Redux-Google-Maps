@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const SimpleProgressPlugin = require('webpack-simple-progress-plugin');
 
 const config = {
 
@@ -80,6 +81,11 @@ const config = {
 	},
 
 	plugins: [
+
+		/**
+		 * @link https://github.com/hyunchulkwak/webpack-simple-progress-plugin
+		 */
+		new SimpleProgressPlugin(),
 
 		new webpack.optimize.ModuleConcatenationPlugin(),
 

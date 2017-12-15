@@ -1,7 +1,3 @@
-import '../styles/main.sass';
-
-import { applyMiddleware, compose, createStore } from 'redux';
-
 import App from './app/App';
 import { Provider } from 'react-redux';
 import React from 'react';

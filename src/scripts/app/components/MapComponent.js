@@ -8,7 +8,6 @@ import {
 import React, { Component } from 'react';
 import {
 	compose,
-	withHandlers,
 	withProps,
 	withState,
 	withStateHandlers,
@@ -26,11 +25,6 @@ export const MapComponent = compose(
 		containerElement: <div style={{ height: '400px' }} />,
 		mapElement: <div style={{ height: '100%' }} />,
 	}),
-	withHandlers({
-		onMarkerClustererClick: () => (markerClusterer) => {
-			const clickedMarkers = markerClusterer.getMarkers();
-		},
-	}),
 	withScriptjs,
 	withGoogleMap,
 )((props) => {
@@ -41,52 +35,47 @@ export const MapComponent = compose(
 			center={props.center}
 			onZoomChanged={props.zoomChanged}
 		>
-			<MarkerClusterer
-				onClick={props.onMarkerClustererClick}
-				averageCenter
-				enableRetinaIcons
-				gridSize={props.gridSize}
-				minimumClusterSize={props.minimumClusterSize}
-			>
-				{props.isMarkerShown && props.coordinates.map((cashdesk) => {
-					const {
-						latitude,
-						longitude,
-					} = cashdesk;
-					const infoWindowToggle = () => props.onMarkerClick(cashdesk.cashdesk_id, [+latitude, +longitude]);
+			{props.isMarkerShown && props.coordinates.map((cashdesk) => {
+				const {
+					cashdesk_id: id,
+					address,
+					latitude,
+					longitude,
+				} = cashdesk;
 
-					return (
-						<Marker
-							key={cashdesk.cashdesk_id}
-							position={{
-								lat: +cashdesk.latitude,
-								lng: +cashdesk.longitude,
-							}}
-							defaultTitle={cashdesk.address}
-							onClick={infoWindowToggle}
-						>
-							{props.markerFolded[cashdesk.cashdesk_id] && (
-								<InfoWindow
-									onCloseClick={infoWindowToggle}
-									position={{ lat: +cashdesk.latitude, lng: +cashdesk.longitude }}
-								>
-									<div>
-										{cashdesk.cashdesk_id &&
-											<div>
-												<img
-													src={`/static/media/themes/maps/img/${cashdesk.cashdesk_id}.jpg`}
-													alt={cashdesk.address}
-												/>
-											</div>
-										}
-										<span>{cashdesk.address}</span>
-									</div>
-								</InfoWindow>
-							)}
-						</Marker>
-					);
-				})}
-			</MarkerClusterer>
+				const infoWindowToggle = () => props.onMarkerClick(id, [+latitude, +longitude]);
+
+				return (
+					<Marker
+						key={id}
+						position={{
+							lat: +latitude,
+							lng: +longitude,
+						}}
+						defaultTitle={address}
+						onClick={infoWindowToggle}
+					>
+						{props.markerFolded[id] && (
+							<InfoWindow
+								onCloseClick={infoWindowToggle}
+								position={{ lat: +latitude, lng: +longitude }}
+							>
+								<div>
+									{id &&
+										<div>
+											<img
+												src={`/static/media/themes/maps/img/${id}.jpg`}
+												alt={address}
+											/>
+										</div>
+									}
+									<span>{address}</span>
+								</div>
+							</InfoWindow>
+						)}
+					</Marker>
+				);
+			})}
 		</GoogleMap>
 	);
 });

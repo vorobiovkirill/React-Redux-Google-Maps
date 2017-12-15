@@ -5,6 +5,8 @@ const http = require('http');
 const https = require('https');
 const webpack = require('webpack');
 const chalk = require('chalk');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const httpProxy = require('http-proxy');
 
@@ -83,8 +85,8 @@ const serverOptions = {
     },
 };
 
-app.use(require('webpack-dev-middleware')(compiler, serverOptions));
-app.use(require('webpack-hot-middleware')(compiler));
+app.use(webpackDevMiddleware(compiler, serverOptions));
+app.use(webpackHotMiddleware(compiler));
 
 app.use('/', express.static('./'));
 
