@@ -8,7 +8,6 @@ import {
 import API from '../api';
 import AddressView from '../views/Address';
 import CityView from '../views/City';
-import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../constants/Constants';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';

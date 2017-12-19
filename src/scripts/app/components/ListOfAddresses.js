@@ -24,11 +24,9 @@ class ListOfAddresses extends Component {
 
 	render() {
 		return (
-			<div>
-				<ul className="menu">
-					{this.oblastRender()}
-				</ul>
-			</div>
+			<ul className="menu">
+				{this.oblastRender()}
+			</ul>
 		);
 	}
 }
@@ -39,10 +37,4 @@ function mapStateToProps(state) {
 	};
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
-		onOblastClick,
-	}, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListOfAddresses);
+export default connect(mapStateToProps)(ListOfAddresses);

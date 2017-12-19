@@ -1,3 +1,5 @@
+import * as actionTypes from '../constants';
+
 import {
 	DEFAULT_LIST_OF_ADDRESSES_FOLDED,
 	DEFAULT_MAP_CENTER,
@@ -6,18 +8,6 @@ import {
 	DEFAULT_MINIMUM_CLUSTER_SIZE,
 	MAP_ZOOM_AFTER_MARKER_CLICK,
 } from '../constants/Constants';
-import {
-	GET_ALL_CASHDESKS,
-	GET_CASHDESKS_DATA,
-	GET_CITIES_DATA,
-	GET_REGIONS_DATA,
-	ON_ADDRESS_CLICK,
-	ON_CITY_CLICK,
-	ON_MAP_LOADED,
-	ON_MARKER_CLICK,
-	ON_OBLAST_CLICK,
-	ON_ZOOM_CHANGED,
-} from '../constants';
 
 import _ from 'lodash';
 
@@ -42,13 +32,13 @@ const initialState = {
 
 const MainReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case ON_MAP_LOADED: {
+		case actionTypes.ON_MAP_LOADED: {
 			return {
 				...state,
 				map: action.payload.map,
 			};
 		}
-		case GET_ALL_CASHDESKS: {
+		case actionTypes.GET_ALL_CASHDESKS: {
 			const { coordinates } = action.payload;
 			const filteredCoordinates = _.filter(coordinates, (coordinate) =>
 				!_.isNil(coordinate.latitude) && !_.isNil(coordinate.longitude));
@@ -58,7 +48,7 @@ const MainReducer = (state = initialState, action) => {
 				coordinates: filteredCoordinates,
 			};
 		}
-		case GET_REGIONS_DATA: {
+		case actionTypes.GET_REGIONS_DATA: {
 			const { regions } = action.payload;
 			const uaSort = (s1, s2) => s1.region_name.localeCompare(s2.region_name);
 
@@ -69,7 +59,7 @@ const MainReducer = (state = initialState, action) => {
 				regions: SortedRegions,
 			};
 		}
-		case GET_CITIES_DATA: {
+		case actionTypes.GET_CITIES_DATA: {
 			const { regions } = state;
 			const { regionId, cities } = action.payload;
 			const uaSort = (s1, s2) => s1.city_name.localeCompare(s2.city_name);
@@ -84,7 +74,7 @@ const MainReducer = (state = initialState, action) => {
 				regions: UpdatedRegions,
 			};
 		}
-		case GET_CASHDESKS_DATA: {
+		case actionTypes.GET_CASHDESKS_DATA: {
 			const { regions } = state;
 			const { regionId, cityId, cashdesks } = action.payload;
 			const uaSort = (s1, s2) => s1.address.localeCompare(s2.address);
@@ -113,7 +103,7 @@ const MainReducer = (state = initialState, action) => {
 				regions: UpdatedRegions,
 			};
 		}
-		case ON_OBLAST_CLICK: {
+		case actionTypes.ON_OBLAST_CLICK: {
 			const validRegion = _.includes(state.oblastFolded, action.payload.regionId);
 			const newFoldedRegions = validRegion
 				? _.without(state.oblastFolded, action.payload.regionId)
@@ -124,7 +114,7 @@ const MainReducer = (state = initialState, action) => {
 				oblastFolded: newFoldedRegions,
 			};
 		}
-		case ON_CITY_CLICK: {
+		case actionTypes.ON_CITY_CLICK: {
 			const validCity = _.includes(state.cityFolded, action.payload.cityId);
 			const newFoldedCities = validCity
 				? _.without(state.cityFolded, action.payload.cityId)
@@ -135,7 +125,7 @@ const MainReducer = (state = initialState, action) => {
 				cityFolded: newFoldedCities,
 			};
 		}
-		case ON_ADDRESS_CLICK: {
+		case actionTypes.ON_ADDRESS_CLICK: {
 			const { cashdeskId } = action.payload;
 			const pageYOffset = window.scroll(0, window.pageYOffset - 10000);
 
@@ -158,7 +148,7 @@ const MainReducer = (state = initialState, action) => {
 				zoom: MAP_ZOOM_AFTER_MARKER_CLICK,
 			};
 		}
-		case ON_MARKER_CLICK: {
+		case actionTypes.ON_MARKER_CLICK: {
 			const { cashdeskId } = action.payload;
 
 			return {
@@ -173,7 +163,7 @@ const MainReducer = (state = initialState, action) => {
 				zoom: MAP_ZOOM_AFTER_MARKER_CLICK,
 			};
 		}
-		case ON_ZOOM_CHANGED: {
+		case actionTypes.ON_ZOOM_CHANGED: {
 			const newZoom = state.map.getZoom();
 
 			return {

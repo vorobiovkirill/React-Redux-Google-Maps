@@ -9,12 +9,9 @@ import React, { Component } from 'react';
 import {
 	compose,
 	withProps,
-	withState,
-	withStateHandlers,
 } from 'recompose';
 
 import { GOOGLE_API_KEY } from '../constants/Constants';
-import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 

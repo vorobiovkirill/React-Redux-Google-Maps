@@ -1,17 +1,4 @@
-import {
-	DEFAULT_MAP_CENTER,
-	DEFAULT_MAP_ZOOM,
-	DEFAULT_MARKER_CLUSTER_GRID_SIZE,
-	DEFAULT_MINIMUM_CLUSTER_SIZE,
-} from '../constants/Constants';
-import {
-	GoogleMap,
-	InfoWindow,
-	Marker,
-	withGoogleMap,
-	withScriptjs,
-} from 'react-google-maps';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
 	getAllCashdesks,
 	getRegionsData,
@@ -26,7 +13,6 @@ import API from '../api';
 import ListOfAddresses from '../components/ListOfAddresses';
 import { MapComponent } from '../components/MapComponent';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -41,21 +27,19 @@ class MapContainer extends Component {
 
 	render() {
 		return (
-			<div>
+			<Fragment>
 				<MapComponent
 					mapLoaded={this.props.onMapLoaded}
 					isMarkerShown={this.props.isMarkerShown}
 					center={this.props.center}
 					zoom={this.props.zoom}
-					gridSize={this.props.gridSize}
-					minimumClusterSize={this.props.minimumClusterSize}
 					coordinates={this.props.coordinates}
 					markerFolded={this.props.markerFolded}
 					zoomChanged={this.props.onZoomChange}
 					onMarkerClick={this.props.onMarkerClick}
 				/>
 				<ListOfAddresses />
-			</div>
+			</Fragment>
 		);
 	}
 }
@@ -66,11 +50,9 @@ MapContainer.propTypes = {
 		lng: PropTypes.number.isRequired,
 	}).isRequired,
 	zoom: PropTypes.number,
-	intervalId: PropTypes.number,
 	isMarkerShown: PropTypes.bool,
 	coordinates: PropTypes.array.isRequired,
 	markerFolded: PropTypes.object,
-	gridSize: PropTypes.number.isRequired,
 	zoomChanged: PropTypes.func,
 	onMarkerClick: PropTypes.func,
 };
@@ -79,8 +61,6 @@ function mapStateToProps(state) {
 	return {
 		center: state.MainReducer.center,
 		zoom: state.MainReducer.zoom,
-		gridSize: state.MainReducer.gridSize,
-		minimumClusterSize: state.MainReducer.minimumClusterSize,
 		markerFolded: state.MainReducer.markerFolded,
 		coordinates: state.MainReducer.coordinates,
 		isMarkerShown: state.MainReducer.isMarkerShown,

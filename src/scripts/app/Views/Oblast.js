@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import PropTypes from 'prop-types';
-
 const OblastView = ({ onOblastClick, name, children }) => (
 	<li>
 		<span

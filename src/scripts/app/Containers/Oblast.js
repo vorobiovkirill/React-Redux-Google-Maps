@@ -6,7 +6,6 @@ import {
 
 import API from '../api';
 import CityContainer from '../containers/City';
-import { DEFAULT_LIST_OF_ADDRESSES_FOLDED } from '../constants/Constants';
 import OblastView from '../views/Oblast';
 import PropTypes from 'prop-types';
 import _ from 'lodash';

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import PropTypes from 'prop-types';
-
 const CityView = ({ onCityClick, name, children }) => {
 	return (
 		<li>
