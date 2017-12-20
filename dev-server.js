@@ -55,7 +55,7 @@ protocol.get(options, (res, req) => {
 });
 
 const app = express();
-const config = require('./webpack.config.js');
+const config = require('./webpack.dev.js');
 
 const compiler = webpack(config);
 

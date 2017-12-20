@@ -27,11 +27,11 @@
   "main": "./src/scripts/index.js",
   "scripts": {
     "build": "npm run build:dev",
-    "build:dev": "npm run clean:dist && webpack --config webpack.config.js --progress --profile --hide-modules --display-optimization-bailout",
-    "build:prod": "npm run clean:dist && webpack --config webpack.prod.js --color --progress --hide-modules --display-optimization-bailout",
+    "build:dev": "npm run clean:dist && ENV=development webpack --config webpack.dev.js --progress --profile --hide-modules --display-optimization-bailout",
+    "build:prod": "npm run clean:dist && ENV=production webpack --config webpack.prod.js --color --progress --hide-modules --display-optimization-bailout",
     "clean:dist": "rimraf dist coverage documentation",
     "clean:install": "npm cache clean --force && rimraf node_modules dist coverage && npm install",
-    "start": "webpack-dev-server --config webpack.config.js --progress --colors",
+    "start": "webpack-dev-server --config webpack.dev.js --progress --colors",
     "start:server": "node dev-server.js --inline --progress --colors",
     "watch": "npm run start",
     "rimraf": "rimraf"
@@ -58,6 +58,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
+    "open-browser-webpack-plugin": "0.0.5",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
@@ -77,11 +78,12 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.74.2",
-    "styled-components": "^2.2.4",
+    "styled-components": "^2.3.2",
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0",
     "webpack-merge": "^4.1.1",
+    "webpack-simple-progress-plugin": "0.0.3",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -101,7 +103,7 @@
     "babel-plugin-transform-react-constant-elements": "^6.23.0",
     "babel-plugin-transform-react-inline-elements": "^6.22.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.10",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.12",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-plugin-webpack-alias": "^2.1.2",
@@ -129,7 +131,7 @@
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-redux-saga": "^0.4.0",
     "eslint-plugin-standard": "^3.0.1",
-    "file-loader": "^1.1.5",
+    "file-loader": "^1.1.6",
     "img-loader": "^2.0.0",
     "node-sass": "^4.7.2",
     "normalize.css": "^7.0.0",
@@ -149,7 +151,6 @@
     "uglifyjs-webpack-plugin": "^1.1.4",
     "url-loader": "^0.6.2",
     "webpack-dev-server": "^2.9.7",
-    "webpack-simple-progress-plugin": "0.0.3",
     "webpack-sources": "^1.1.0"
   },
   "analyze": true

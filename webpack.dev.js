@@ -2,34 +2,25 @@ const webpack = require('webpack');
 const path = require('path');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const SimpleProgressPlugin = require('webpack-simple-progress-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 const config = {
 
-	devtool: 'source-map',
+	devtool: 'cheap-module-eval-source-map',
 
-	entry: {
-		main: [
-			'./src/scripts/index.js',
-		],
-		vendor: [
-			'react',
-			'redux',
-			'react-redux',
-			'lodash',
-			'react-google-maps',
-		],
-	},
+	entry: [
+		'react-hot-loader/patch',
+		'webpack-hot-middleware/client?reload=true',
+		'./src/scripts/index.js',
+	],
 
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'js/[name].bundle.js',
 		sourceMapFilename: '[file].map',
 		chunkFilename: '[name].[chunkhash].chunk.js',
-		publicPath: '/',
+		publicPath: '/assets/',
 	},
 
 	performance: {
@@ -82,9 +73,9 @@ const config = {
 	plugins: [
 
 		/**
-		 * @link https://github.com/hyunchulkwak/webpack-simple-progress-plugin
+		 * @link https://webpack.js.org/plugins/hot-module-replacement-plugin/
 		 */
-		new SimpleProgressPlugin(),
+		new webpack.HotModuleReplacementPlugin(),
 
 		/**
 		 * @link https://webpack.js.org/plugins/no-emit-on-errors-plugin/
@@ -92,13 +83,10 @@ const config = {
 		new webpack.NoEmitOnErrorsPlugin(),
 
 		/**
-		 * @link https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
+		 * @link https://webpack.js.org/plugins/ignore-plugin/
 		 */
-		new webpack.optimize.OccurrenceOrderPlugin(),
+		new webpack.IgnorePlugin(/\.json$/),
 
-		/**
-		 * @link https://webpack.js.org/plugins/module-concatenation-plugin/
-		 */
 		new webpack.optimize.ModuleConcatenationPlugin(),
 
 		/**
@@ -109,49 +97,20 @@ const config = {
 		}),
 
 		/**
-		 * @link https://webpack.js.org/plugins/commons-chunk-plugin/
-		 */
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'vendor',
-			filename: 'js/vendor.js',
-			minChunks: Infinity,
-			children: true,
-		}),
-
-		/**
-		 * @link http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-		 */
-		new UglifyJsPlugin({
-			compress: {
-				warnings: false,
-				screw_ie8: true,
-				conditionals: true,
-				unused: true,
-				comparisons: true,
-				sequences: true,
-				dead_code: true,
-				evaluate: true,
-				if_return: true,
-				join_vars: true,
-			},
-			output: {
-				comments: false,
-			},
-		}),
-
-		/**
 		 * @link https://webpack.js.org/plugins/define-plugin/
 		 */
 		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
-			__DEVELOPMENT__: false,
-			__PRODUCTION__: true,
+			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+			__DEVELOPMENT__: true,
+			__PRODUCTION__: false,
 		}),
 
 		/**
-		 * @link https://github.com/NMFR/optimize-css-assets-webpack-plugin
+		 * @link https://www.npmjs.com/package/open-browser-webpack-plugin
 		 */
-		new OptimizeCssAssetsPlugin(),
+		new OpenBrowserPlugin({
+			url: 'http://10.1.4.38:3002',
+		}),
 	],
 
 };
