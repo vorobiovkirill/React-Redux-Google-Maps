@@ -55,7 +55,10 @@ export const MapComponent = compose(
 						{props.markerFolded[id] && (
 							<InfoWindow
 								onCloseClick={infoWindowToggle}
-								position={{ lat: +latitude, lng: +longitude }}
+								position={{
+									lat: +latitude,
+									lng: +longitude,
+								}}
 							>
 								<div>
 									{id &&

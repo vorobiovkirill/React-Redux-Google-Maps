@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
-import API from '../api';
 import OblastContainer from '../containers/Oblast';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { onOblastClick } from '../actions/actionsTypes';
 
 class ListOfAddresses extends Component {
 
