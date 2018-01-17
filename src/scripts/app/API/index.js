@@ -5,22 +5,22 @@ import {
 } from '../constants/Constants';
 
 const fetchAllRegions = () =>
-	fetch(`/${window.g_user_language}${REGIONS_URL}`, { method: 'GET', credentials: 'include' })
+	fetch(`${REGIONS_URL}`, { method: 'GET', credentials: 'include' })
 		.then((response) => response.json())
 		.catch(error => console.error(error));
 
 const fetchCitiesByRegions = (regionId) =>
-	fetch(`/${window.g_user_language}${CITIES_BY_REGIONS_URL}${regionId}/`, { method: 'GET', credentials: 'include' })
+	fetch(`${CITIES_BY_REGIONS_URL}${regionId}/`, { method: 'GET', credentials: 'include' })
 		.then((response) => response.json())
 		.catch(error => console.error(error));
 
 const fetchCashDesksByCity = (cityId) =>
-	fetch(`/${window.g_user_language}${CASHDESKS_BY_CITY_URL}${cityId}/`, { method: 'GET', credentials: 'include' })
+	fetch(`${CASHDESKS_BY_CITY_URL}${cityId}/`, { method: 'GET', credentials: 'include' })
 		.then((response) => response.json())
 		.catch(error => console.error(error));
 
 const fetchAllCashdesks = () =>
-	fetch(`/${window.g_user_language}${CASHDESKS_BY_CITY_URL}`, { method: 'GET', credentials: 'include' })
+	fetch(`${CASHDESKS_BY_CITY_URL}`, { method: 'GET', credentials: 'include' })
 		.then((response) => response.json())
 		.catch(error => console.error(error));
 

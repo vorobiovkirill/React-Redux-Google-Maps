@@ -1,4 +1,8 @@
 import {
+	GOOGLE_API_KEY,
+	GOOGLE_MAP_MARKER_ICON,
+} from '../constants/Constants';
+import {
 	GoogleMap,
 	InfoWindow,
 	Marker,
@@ -11,7 +15,6 @@ import {
 	withProps,
 } from 'recompose';
 
-import { GOOGLE_API_KEY } from '../constants/Constants';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -50,6 +53,7 @@ export const MapComponent = compose(
 							lng: +longitude,
 						}}
 						defaultTitle={address}
+						icon={`${GOOGLE_MAP_MARKER_ICON}`}
 						onClick={infoWindowToggle}
 					>
 						{props.markerFolded[id] && (
