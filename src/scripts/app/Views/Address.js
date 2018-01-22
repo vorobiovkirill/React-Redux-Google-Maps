@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
-const AddressView = ({ onAddressClick, name }) => {
+import _ from 'lodash';
+
+const AddressView = ({ onAddressClick, name, isSelected, id }) => {
 	return (
 		<li>
-			<a onClick={onAddressClick}>
+			<a
+				className={isSelected ? 'isActive' : ''}
+				onClick={onAddressClick}>
 				{name}
 			</a>
 		</li>

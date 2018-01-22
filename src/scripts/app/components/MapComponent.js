@@ -56,7 +56,7 @@ export const MapComponent = compose(
 						icon={`${GOOGLE_MAP_MARKER_ICON}`}
 						onClick={infoWindowToggle}
 					>
-						{props.markerFolded[id] && (
+						{props.selectedMarker[id] && (
 							<InfoWindow
 								onCloseClick={infoWindowToggle}
 								position={{

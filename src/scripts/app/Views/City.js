@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 
-const CityView = ({ onCityClick, name, children }) => {
-	return (
-		<li>
+const CityView = ({ onCityClick, name, isCityFolded, children }) => {
+	return <li>
 			<span
-				className="klk city"
+				className={isCityFolded ? 'klk city opened' : 'klk city'}
 				onClick={onCityClick}
 			>
 				{name}
 			</span>
 			{children}
-		</li>
-	);
+		</li>;
 };
 
 export default CityView;

@@ -17,6 +17,7 @@ class CityContainer extends Component {
 
 	state = {
 		fetchCashDesksByCity: true,
+		selected: false,
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -25,6 +26,10 @@ class CityContainer extends Component {
 				fetchCashDesksByCity: true,
 			});
 		}
+	}
+
+	isActive() {
+		return this.state.selected ? 'active' : 'default';
 	}
 
 	pointsRender = (cashdesks) => {
@@ -54,10 +59,15 @@ class CityContainer extends Component {
 							latitude,
 							longitude,
 						} = cashdesk;
+
+						const isSelected = _.has(this.props.selectedMarker, cashdesk.cashdesk_id);
+
 						return (
 							<AddressView
 								key={cashdesk.cashdesk_id}
+								id={cashdesk.cashdesk_id}
 								name={cashdesk.address}
+								isSelected={isSelected}
 								onAddressClick={() => this.props.onAddressClick(cashdesk.cashdesk_id, [+latitude, +longitude])}
 							/>
 						);
@@ -79,6 +89,7 @@ class CityContainer extends Component {
 		return (
 			<CityView
 				name={city.city_name}
+				isCityFolded={isFolded}
 				onCityClick={() => this.props.onCityClick(regionId, city.city_id)}
 			>
 				{
@@ -97,6 +108,8 @@ function mapStateToProps(state) {
 	return {
 		listOfAddressesFolded: state.MainReducer.listOfAddressesFolded,
 		cityFolded: state.MainReducer.cityFolded,
+		selectedMarker: state.MainReducer.selectedMarker,
+		cashdeskActive: state.MainReducer.cashdeskActive,
 	};
 }
 

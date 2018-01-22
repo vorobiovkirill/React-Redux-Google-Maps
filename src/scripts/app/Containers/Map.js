@@ -37,7 +37,7 @@ class MapContainer extends Component {
 					center={this.props.center}
 					zoom={this.props.zoom}
 					coordinates={this.props.coordinates}
-					markerFolded={this.props.markerFolded}
+					selectedMarker={this.props.selectedMarker}
 					zoomChanged={this.props.onZoomChange}
 					onMarkerClick={this.props.onMarkerClick}
 				/>
@@ -55,7 +55,7 @@ MapContainer.propTypes = {
 	zoom: PropTypes.number,
 	isMarkerShown: PropTypes.bool,
 	coordinates: PropTypes.array.isRequired,
-	markerFolded: PropTypes.object,
+	selectedMarker: PropTypes.object,
 	zoomChanged: PropTypes.func,
 	onMarkerClick: PropTypes.func,
 };
@@ -64,7 +64,7 @@ function mapStateToProps(state) {
 	return {
 		center: state.MainReducer.center,
 		zoom: state.MainReducer.zoom,
-		markerFolded: state.MainReducer.markerFolded,
+		selectedMarker: state.MainReducer.selectedMarker,
 		coordinates: state.MainReducer.coordinates,
 		isMarkerShown: state.MainReducer.isMarkerShown,
 	};

@@ -53,6 +53,7 @@ class OblastContainer extends Component {
 		return (
 			<OblastView
 				name={oblast.region_name}
+				isOblastFolded={isFolded}
 				onOblastClick={() => this.props.onOblastClick(oblast.region_id)}
 			>
 				{

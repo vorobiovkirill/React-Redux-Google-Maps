@@ -24,7 +24,7 @@ const initialState = {
 	minimumGridSize: DEFAULT_MINIMUM_CLUSTER_SIZE,
 	regions: [],
 	coordinates: [],
-	markerFolded: {},
+	selectedMarker: {},
 	listOfAddressesFolded: DEFAULT_LIST_OF_ADDRESSES_FOLDED,
 	oblastFolded: [],
 	cityFolded: [],
@@ -50,9 +50,8 @@ const MainReducer = (state = initialState, action) => {
 		}
 		case actionTypes.GET_REGIONS_DATA: {
 			const { regions } = action.payload;
-			const uaSort = (s1, s2) => s1.region_name.localeCompare(s2.region_name);
 
-			const SortedRegions = regions.sort(uaSort);
+			const SortedRegions = _.orderBy(regions, [region => region.region_name.localeCompare()], ['asc']);
 
 			return {
 				...state,
@@ -62,8 +61,8 @@ const MainReducer = (state = initialState, action) => {
 		case actionTypes.GET_CITIES_DATA: {
 			const { regions } = state;
 			const { regionId, cities } = action.payload;
-			const uaSort = (s1, s2) => s1.city_name.localeCompare(s2.city_name);
-			const SortedCities = cities.sort(uaSort);
+
+			const SortedCities = _.orderBy(cities, [city => city.city_name.localeCompare()], ['asc']);
 
 			const UpdatedRegions = _.map(regions, (region) => region.region_id === regionId
 				? { ...region, cities: SortedCities }
@@ -77,8 +76,8 @@ const MainReducer = (state = initialState, action) => {
 		case actionTypes.GET_CASHDESKS_DATA: {
 			const { regions } = state;
 			const { regionId, cityId, cashdesks } = action.payload;
-			const uaSort = (s1, s2) => s1.address.localeCompare(s2.address);
-			const SortedCashdesks = cashdesks.sort(uaSort);
+
+			const SortedCashdesks = _.orderBy(cashdesks, [address => address.address.localeCompare()], ['asc']);
 
 			const UpdatedRegions = _.map(regions, (region) => {
 				if (region.region_id === regionId) {
@@ -138,8 +137,8 @@ const MainReducer = (state = initialState, action) => {
 			return {
 				...state,
 				intervalId: newIntervalId,
-				markerFolded: {
-					[cashdeskId]: !state.markerFolded[cashdeskId],
+				selectedMarker: {
+					[cashdeskId]: !state.selectedMarker[cashdeskId],
 				},
 				center: {
 					lat: action.payload.center[0],
@@ -153,8 +152,8 @@ const MainReducer = (state = initialState, action) => {
 
 			return {
 				...state,
-				markerFolded: {
-					[cashdeskId]: !state.markerFolded[cashdeskId],
+				selectedMarker: {
+					[cashdeskId]: !state.selectedMarker[cashdeskId],
 				},
 				center: {
 					lat: action.payload.center[0],

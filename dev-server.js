@@ -56,9 +56,7 @@ protocol.get(options, (res, req) => {
 
 const app = express();
 const config = require('./webpack.dev.js');
-
 const compiler = webpack(config);
-
 
 proxy.on('error', (err, req, res) => {
     if (!res.headersSent) {

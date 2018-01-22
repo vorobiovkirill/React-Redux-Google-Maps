@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-const OblastView = ({ onOblastClick, name, children }) => (
+const OblastView = ({ onOblastClick, name, isOblastFolded, children }) => (
 	<li>
 		<span
-			className="klk regn"
+			className={isOblastFolded ? "klk regn opened" : "klk regn"}
 			onClick={onOblastClick}
 		>
 			{name}
