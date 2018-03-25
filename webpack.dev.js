@@ -109,7 +109,7 @@ const config = {
 		 * @link https://www.npmjs.com/package/open-browser-webpack-plugin
 		 */
 		new OpenBrowserPlugin({
-			url: 'http://10.1.4.38:3002',
+			url: 'localhost:3000',
 		}),
 	],
 

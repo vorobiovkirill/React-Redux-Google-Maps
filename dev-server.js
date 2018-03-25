@@ -17,8 +17,8 @@ const proxy = httpProxy.createProxyServer({
 
 const args = require('minimist')(process.argv);
 
-const port = args.p || 3002;
-const host = args.h || '10.1.4.38';
+const port = args.p || 3000;
+const host = args.h || 'localhost';
 const apiPort = args.a ? `:${args.a}` : '';
 const devHost = args.devHost || 'www.favorit.com.ua';
 const remoteProtocol = args.protocol || 'https';
